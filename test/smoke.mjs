@@ -1,0 +1,25 @@
+import assert from 'node:assert/strict';
+import { rewriteHtml, rwCss } from '../src/proxy.js';
+const html = rewriteHtml('<html><head></head><body><a href="https://example.com/a">x</a><img src="/x.png"><script>alert(1)</script></body></html>', 'https://example.org/', 'nonce123');
+assert.match(html, /\/proxy\?url=https%3A%2F%2Fexample.com%2Fa/);
+assert.match(html, /\/proxy\?url=https%3A%2F%2Fexample.org%2Fx.png/);
+assert.doesNotMatch(html, /alert\(1\)/);
+assert.match(html, /nonce123/);
+const css = rwCss('a{background:url("/img.png")} @import "/a.css";', 'https://example.org/base/');
+assert.match(css, /\/proxy\?url=https%3A%2F%2Fexample.org%2Fimg.png/);
+assert.match(css, /\/proxy\?url=https%3A%2F%2Fexample.org%2Fa.css/);
+console.log('Rel Zone Cloudflare smoke checks passed.');
+
+import { readFileSync } from 'node:fs';
+const htmlApp = readFileSync(new URL('../assets/index.html', import.meta.url), 'utf8');
+const appJs = readFileSync(new URL('../assets/js/app.js', import.meta.url), 'utf8');
+const vmHtml = readFileSync(new URL('../assets/virtualxp/VirtualXP.htm', import.meta.url), 'utf8');
+const wrangler = readFileSync(new URL('../wrangler.toml', import.meta.url), 'utf8');
+assert.match(htmlApp, /pcloud\.link\/publink\/show/);
+assert.match(htmlApp, /id="vmiso"/);
+assert.match(appJs, /rel-zone-vm-storage/);
+assert.match(appJs, /indexedDB/);
+assert.match(vmHtml, /getSavedVirtualXPIso/);
+assert.match(wrangler, /name = "securestudy"/);
+assert.doesNotMatch(wrangler, /r2_buckets|VM_BUCKET/);
+console.log('VirtualXP IndexedDB upload checks passed.');

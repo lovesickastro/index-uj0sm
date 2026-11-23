@@ -1,0 +1,22 @@
+name = "securestudy"
+main = "src/worker.js"
+compatibility_date = "2026-11-13"
+workers_dev = true
+
+[assets]
+directory = "./assets"
+binding = "ASSETS"
+run_worker_first = ["/api/*", "/proxy", "/ws/*", "/wisp", "/wisp/*", "/bare/*"]
+
+[[durable_objects.bindings]]
+name = "REALTIME"
+class_name = "RealtimeHub"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["RealtimeHub"]
+
+
+[vars]
+GROQ_MODEL = "openai/gpt-oss-120b"
+RING_SECONDS = "30"

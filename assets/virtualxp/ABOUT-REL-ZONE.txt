@@ -1,0 +1,5 @@
+VirtualXP (https://github.com/lrusso/VirtualXP) by lrusso, a modified Halfix. These files are the project's, unchanged,
+except two small edits in VirtualXP.htm (marked "Rel Zone"):
+  1. it no longer refuses to run inside an iframe (the original only starts as a top-level page), so it can run in the VM tab
+  2. it exposes the emulator as window.halfix so the VM tab can pause it when you leave the tab
+This project came with no license file. If you publish your site publicly, check the author's terms for VirtualXP and Halfix.
